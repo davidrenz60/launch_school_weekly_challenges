@@ -8,7 +8,7 @@ class Matrix
 
   def saddle_points
     result = []
-    each { |x, y| result << [x, y] if saddle_point?([x, y]) }
+    each { |x, y| result << [x, y] if saddle_point?(x, y) }
     result
   end
 
@@ -18,9 +18,9 @@ class Matrix
     string.split("\n").map(&:split).map { |row| row.map(&:to_i) }
   end
 
-  def saddle_point?(coordinate)
-    rows[coordinate[0]].max == rows[coordinate[0]][coordinate[1]] &&
-      columns[coordinate[1]].min == rows[coordinate[0]][coordinate[1]]
+  def saddle_point?(x, y)
+    rows[x].max == rows[x][y] &&
+      columns[y].min == rows[x][y]
   end
 
   def each
@@ -29,6 +29,7 @@ class Matrix
         yield(x, y)
       end
     end
-    rows
+
+    self
   end
 end
