@@ -1,8 +1,14 @@
 class Phrase
-  attr_reader :word_count
+  def initialize(phrase)
+    @phrase = phrase
+  end
 
-  def initialize(text)
-    @word_count = text.downcase.scan(/\w+'?\w+|\d+/)
-                  .each_with_object(Hash.new(0)) { |word, hash| hash[word] += 1 }
+  def word_count
+    word_count = Hash.new(0)
+    @phrase.downcase.scan(/\b[\w']+\b/) do |word|
+      word_count[word] += 1
+    end
+
+    word_count
   end
 end
