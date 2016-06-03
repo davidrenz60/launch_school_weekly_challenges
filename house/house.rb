@@ -1,23 +1,29 @@
 class House
   def self.recite
-    parts = House.new.pieces.reverse
+    House.new.make_poem
+  end
 
+  def make_poem
+    parts = pieces.reverse
     rhyme = ""
     (1..parts.size).each do |index|
       rhyme << "This is "
-
       parts.take(index).reverse_each do |line|
-        if line[1]
-          rhyme << line[0] + "\n" + line[1] + " "
-        else
-          rhyme << line[0] + ".\n"
-        end
+        rhyme << make_line(line)
       end
-
-      rhyme << "\n" unless index == parts.size
     end
 
-    rhyme
+    rhyme.chomp
+  end
+
+  private
+
+  def make_line(line)
+    if line[1]
+      line[0] + "\n" + line[1] + " "
+    else
+      line[0] + ".\n\n"
+    end
   end
 
   def pieces
