@@ -1,9 +1,9 @@
 class House
   def self.recite
-    new.make_poem
+    new.recite
   end
 
-  def make_poem
+  def recite
     (1..pieces.size)
       .map { |piece| make_verse(pieces.last(piece)) }
       .join("\n\n") + "\n"
