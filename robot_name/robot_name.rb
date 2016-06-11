@@ -8,6 +8,7 @@ class Robot
   end
 
   def reset
+    @@name_list.delete(@name)
     new_name = generate_name
     @@name_list << new_name
     @name = new_name
@@ -17,8 +18,7 @@ class Robot
 
   def generate_name
     loop do
-      name = (Array.new(2) { ('A'..'Z').to_a.sample }
-              + [rand(100..999).to_s]).join
+      name = (Array.new(2) { ('A'..'Z').to_a.sample } + [rand(100..999).to_s]).join
       break name unless @@name_list.include?(name)
     end
   end
