@@ -1,25 +1,28 @@
 class Robot
-  attr_reader :name
-  @@name_list = []
+  @name_list = []
 
-  def initialize
-    @name = generate_name
-    @@name_list << @name
+  def name
+    @name ||= generate_name
   end
 
   def reset
-    @@name_list.delete(@name)
-    new_name = generate_name
-    @@name_list << new_name
-    @name = new_name
+    Robot.name_list.delete(@name)
+    @name = nil
+  end
+
+  def self.name_list
+    @name_list
   end
 
   private
 
   def generate_name
-    loop do
-      name = (Array.new(2) { ('A'..'Z').to_a.sample } + [rand(100..999).to_s]).join
-      break name unless @@name_list.include?(name)
+    name = (Array.new(2) { ('A'..'Z').to_a.sample } + [rand(000..999).to_s]).join
+    if Robot.name_list.include?(name)
+      name = generate_name
+    else
+      Robot.name_list << name
     end
+    name
   end
 end
