@@ -1,14 +1,13 @@
 class RunLengthEncoding
   def self.encode(input)
-    input.chars.chunk { |char| char }
-         .map do |char, group|
-           group.size == 1 ? char : "#{group.size}#{char}"
-         end.join
+    input.gsub(/((.)\2*)/) do |group|
+      group.size == 1 ? group : "#{group.size}#{group[0]}"
+    end
   end
 
   def self.decode(input)
-    input.scan(/\d+.|./).map do |group|
+    input.gsub(/\d+.|./) do |group|
       group.size == 1 ? group : group[-1] * group.to_i
-    end.join
+    end
   end
 end
