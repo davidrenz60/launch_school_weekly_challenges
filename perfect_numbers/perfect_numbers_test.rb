@@ -14,6 +14,12 @@ class PerfectNumberTest < Minitest::Test
     end
   end
 
+  def test_float_raises_error
+    assert_raises RuntimeError do
+      PerfectNumber.classify(5.5)
+    end
+  end
+
   def test_one_is_deficient
     assert_equal 'deficient', PerfectNumber.classify(1)
   end

@@ -1,6 +1,6 @@
 module PerfectNumber
   def self.classify(number)
-    raise "Number must be greater than 0" unless number > 0
+    raise RuntimeError unless number > 0 && number.to_i == number
 
     sum = aliquot_sum(number)
     if sum == number
