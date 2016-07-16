@@ -1,7 +1,8 @@
 class Integer
   def to_roman
-    first, second, third, fourth = digits
-    thousands(fourth) + hundreds(third) + tens(second) + ones(first)
+    digits.each_with_object("").with_index do |(digit, numeral), index|
+      numeral.prepend(digit_to_symbol(digit, symbols[index]))
+    end
   end
 
   private
@@ -17,23 +18,11 @@ class Integer
     end
   end
 
+  def symbols
+    [["I", "V", "X"], ["X", "L", "C"], ["C", "D", "M"], ["M"]]
+  end
+
   def digits
     to_s.chars.map(&:to_i).reverse
-  end
-
-  def ones(digit)
-    digit_to_symbol(digit, %w(I V X))
-  end
-
-  def tens(digit)
-    digit_to_symbol(digit, %w(X L C))
-  end
-
-  def hundreds(digit)
-    digit_to_symbol(digit, %w(C D M))
-  end
-
-  def thousands(digit)
-    digit_to_symbol(digit, %w(M))
   end
 end
