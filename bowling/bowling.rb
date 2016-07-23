@@ -61,11 +61,8 @@ class Game
   def valid_pin_count?(pins)
     return true if @frames[@frame_index] == []
     frame_score = @frames[@frame_index].first
-    if @frame_index == 10 && strike?(@frames[@frame_index - 1]) && frame_score == 10
-      frame_score + pins <= 20
-    else
+    (fill_ball_strike?(frame_score) && frame_score + pins <= 20) ||
       frame_score + pins <= 10
-    end
   end
 
   def fill_balls_not_rolled?
@@ -76,8 +73,14 @@ class Game
 
   def game_over?
     return false if @frame_index < 10
-    return true if spare?(@frames[9]) && @frames[10].size == 1
-    return true if strike?(@frames[9]) && @frames[10].size == 2
-    return true if @frames[9].size == 2 && @frames[9].reduce(:+) < 10
+    spare?(@frames[9]) && @frames[10].size == 1 ||
+      strike?(@frames[9]) && @frames[10].size == 2 ||
+      @frames[9].size == 2 && @frames[9].reduce(:+) < 10
+  end
+
+  def fill_ball_strike?(frame_score)
+    @frame_index == 10 &&
+      strike?(@frames[@frame_index - 1]) &&
+      frame_score == 10
   end
 end
