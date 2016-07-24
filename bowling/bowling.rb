@@ -14,22 +14,24 @@ class Game
   def score
     raise 'Game is not yet over, cannot score!' if fill_balls_not_rolled?
     raise 'Score cannot be taken until the end of the game' unless game_over?
-    @frames[10] << 0 if @frames[10] == []
-    adjusted_scores = @frames.each_with_index do |frame, index|
+    adjusted_scores.map { |frame| frame.reduce(:+) }.reduce(:+)
+  end
+
+  private
+
+  def adjusted_scores
+    @frames.each_with_index do |frame, index|
       @frames[index] = adjust_for_strke(index) if strike?(frame)
       @frames[index] = adjust_for_spare(index) if spare?(frame)
+      @frames[index] << 0 if frame == []
     end
-    adjusted_scores.map { |frame| frame.reduce(:+) }.reduce(:+)
   end
 
   def add_score(pins)
     frame = @frames[@frame_index]
     frame << pins
-    if @frame_index == 10
-      return
-    elsif pins == 10 || frame.size == 2
-      @frame_index += 1
-    end
+    return if @frame_index == 10
+    @frame_index += 1 if pins == 10 || frame.size == 2
   end
 
   def adjust_for_strke(index)
