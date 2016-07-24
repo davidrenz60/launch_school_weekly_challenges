@@ -119,6 +119,7 @@ class GameTest < Minitest::Test
   end
 
   def test_should_not_allow_rolls_better_than_strike
+
     assert_raises(
       RuntimeError,
       'Pins must have a value from 0 to 10') do
