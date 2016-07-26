@@ -1,12 +1,10 @@
 class Game
   def initialize
-    @frames = Array.new(9) { Frame.new } + [LastFrame.new]
+    @frames = setup_frames
   end
 
   def roll(pins)
     validate_game_in_progress
-    validate_roll_score(pins)
-    validate_frame_score(pins)
     current_frame.add_score(pins)
   end
 
@@ -15,6 +13,12 @@ class Game
     validate_game_over
     adjust_scores!
     @frames.map(&:total).reduce(:+)
+  end
+
+  private
+
+  def setup_frames
+    Array.new(9) { Frame.new } + [LastFrame.new]
   end
 
   def adjust_scores!
@@ -44,14 +48,6 @@ class Game
     @frames.last.open?
   end
 
-  def validate_roll_score(pins)
-    raise 'Pins must have a value from 0 to 10' unless (0..10).cover?(pins)
-  end
-
-  def validate_frame_score(pins)
-    raise 'Pin count exceeds pins on the lane' unless current_frame.valid_score?(pins)
-  end
-
   def validate_game_in_progress
     raise 'Should not be able to roll after game is over' unless game_in_progress?
   end
@@ -63,65 +59,67 @@ class Game
   def validate_game_over
     raise 'Score cannot be taken until the end of the game' if game_in_progress?
   end
-end
 
-class Frame
-  def initialize
-    @scores = []
+  class Frame
+    def initialize
+      @scores = []
+    end
+
+    def score=(pins)
+      @scores = [pins]
+    end
+
+    def first
+      @scores.first || 0
+    end
+
+    def last
+      @scores.last || 0
+    end
+
+    def total
+      @scores.empty? ? 0 : @scores.reduce(:+)
+    end
+
+    def add_score(pins)
+      raise 'Pins must have a value from 0 to 10' unless (0..10).cover?(pins)
+      raise 'Pin count exceeds pins on the lane' unless valid_score?(pins)
+      @scores << pins
+    end
+
+    def open?
+      !strike? && @scores.size < 2
+    end
+
+    def strike?
+      @scores == [10]
+    end
+
+    def spare?
+      total == 10 && @scores.size == 2
+    end
+
+    def valid_score?(pins)
+      total + pins <= 10
+    end
+
+    def fill_balls?
+      false
+    end
   end
 
-  def score=(pins)
-    @scores = [pins]
-  end
+  class LastFrame < Frame
+    def open?
+      fill_balls? ? @scores.size < 3 : @scores.size < 2
+    end
 
-  def first
-    @scores.first || 0
-  end
+    def valid_score?(pins)
+      return last + pins <= 20 if last == 10
+      last + pins <= 10
+    end
 
-  def last
-    @scores.last || 0
-  end
-
-  def total
-    @scores.empty? ? 0 : @scores.reduce(:+)
-  end
-
-  def add_score(pins)
-    @scores << pins
-  end
-
-  def open?
-    !strike? && @scores.size < 2
-  end
-
-  def strike?
-    @scores == [10]
-  end
-
-  def spare?
-    total == 10 && @scores.size == 2
-  end
-
-  def valid_score?(pins)
-    total + pins <= 10
-  end
-
-  def fill_balls?
-    false
-  end
-end
-
-class LastFrame < Frame
-  def open?
-    fill_balls? ? @scores.size < 3 : @scores.size < 2
-  end
-
-  def valid_score?(pins)
-    return last + pins <= 20 if last == 10
-    last + pins <= 10
-  end
-
-  def fill_balls?
-    first == 10 || spare?
+    def fill_balls?
+      first == 10 || spare?
+    end
   end
 end
