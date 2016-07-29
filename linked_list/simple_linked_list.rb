@@ -2,10 +2,10 @@ class Element
   attr_reader :datum
   attr_accessor :next, :before
 
-  def initialize(data, next_element=nil)
+  def initialize(data, next_element=nil, before=nil)
     @datum = data
     @next = next_element
-    @before = nil
+    @before = before
   end
 
   def tail?
