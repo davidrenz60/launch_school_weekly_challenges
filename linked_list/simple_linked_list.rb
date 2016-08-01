@@ -1,6 +1,5 @@
 class Element
-  attr_reader :datum
-  attr_accessor :next
+  attr_reader :datum, :next
 
   def initialize(data, next_element=nil)
     @datum = data
