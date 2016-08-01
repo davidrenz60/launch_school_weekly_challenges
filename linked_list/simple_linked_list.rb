@@ -25,9 +25,7 @@ class SimpleLinkedList
   end
 
   def push(data)
-    element = Element.new(data)
-    element.next = head unless empty?
-    @head = element
+    @head = Element.new(data, head)
   end
 
   def pop
