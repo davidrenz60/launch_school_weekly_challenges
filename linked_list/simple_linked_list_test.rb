@@ -10,52 +10,52 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_element_tail
-    
+
     e = Element.new(1)
     assert e.tail?
   end
 
   def test_element_next_default
-    
+
     e = Element.new(1)
     assert_nil e.next
   end
 
   def test_element_next_initialization
-    
+
     e1 = Element.new(1)
     e2 = Element.new(2, e1)
     assert_equal e1, e2.next
   end
 
   def test_empty_list_size
-    
+
     l = SimpleLinkedList.new
     assert_equal 0, l.size
   end
 
   def test_empty_list_empty
-    
+
     l = SimpleLinkedList.new
     assert l.empty?
   end
 
   def test_pushing_element_on_list
-    
+
     l = SimpleLinkedList.new
     l.push(1)
     assert_equal 1, l.size
   end
 
   def test_empty_list_1_element
-    
+
     l = SimpleLinkedList.new
     l.push(1)
     refute l.empty?
   end
 
   def test_peeking_at_list
-    
+
     l = SimpleLinkedList.new
     l.push(1)
     assert_equal 1, l.size
@@ -63,13 +63,13 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_peeking_at_empty_list
-    
+
     l = SimpleLinkedList.new
     assert_nil l.peek
   end
 
   def test_access_head_element
-    
+
     l = SimpleLinkedList.new
     l.push(1)
     assert_instance_of Element, l.head
@@ -78,7 +78,7 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_items_are_stacked
-    
+
     l = SimpleLinkedList.new
     l.push(1)
     l.push(2)
@@ -88,7 +88,7 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_push_10_items
-    
+
     l = SimpleLinkedList.new
     (1..10).each do |datum|
       l.push(datum)
@@ -106,7 +106,7 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_popping_frenzy
-    
+
     l = SimpleLinkedList.new
     (1..10).each do |datum|
       l.push(datum)
@@ -117,21 +117,21 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_from_a_empty_array
-    
+
     l = SimpleLinkedList.from_a([])
     assert_equal 0, l.size
     assert_nil l.peek
   end
 
   def test_from_a_nil
-    
+
     l = SimpleLinkedList.from_a(nil)
     assert_equal 0, l.size
     assert_nil l.peek
   end
 
   def test_from_a_2_element_array
-    
+
     l = SimpleLinkedList.from_a([1, 2])
     assert_equal 2, l.size
     assert_equal 1, l.peek
@@ -139,7 +139,7 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_from_a_10_items
-    
+
     l = SimpleLinkedList.from_a((1..10).to_a)
     assert_equal 10, l.size
     assert_equal 1, l.peek
@@ -147,18 +147,18 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_to_a_empty_list
-    
+
     l = SimpleLinkedList.new
     assert_equal [], l.to_a
   end
 
   def test_to_a_of_1_element_list
-    
+
     assert_equal [1], SimpleLinkedList.from_a([1]).to_a
   end
 
   def test_to_a_of_2_element_list
-    
+
     assert_equal [1, 2], SimpleLinkedList.from_a([1, 2]).to_a
   end
 

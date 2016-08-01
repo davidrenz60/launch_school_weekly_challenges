@@ -1,11 +1,10 @@
 class Element
   attr_reader :datum
-  attr_accessor :next, :before
+  attr_accessor :next
 
-  def initialize(data, next_element=nil, before=nil)
+  def initialize(data, next_element=nil)
     @datum = data
     @next = next_element
-    @before = before
   end
 
   def tail?
@@ -15,46 +14,30 @@ end
 
 class SimpleLinkedList
   include Enumerable
-  attr_reader :head, :tail, :size
+  attr_reader :head
 
-  def initialize
-    @size = 0
+  def size
+    count
   end
 
   def empty?
-    @head.nil?
+    head.nil?
   end
 
   def push(data)
-    @size += 1
     element = Element.new(data)
-
-    if empty?
-      @head = element
-      @tail = element
-    else
-      head.before = element
-      element.next = head
-      @head = element
-    end
+    element.next = head unless empty?
+    @head = element
   end
 
   def pop
-    @size -= 1
-    data = @head.datum
-
-    if head.tail?
-      @head = nil
-      @tail = nil
-    else
-      head.next.before = nil
-      @head = head.next
-    end
+    data = peek
+    @head = head.next
     data
   end
 
   def peek
-    head ? head.datum : nil
+    head&.datum
   end
 
   def each
@@ -72,9 +55,9 @@ class SimpleLinkedList
   end
 
   def reverse
-    list = SimpleLinkedList.new
-    each { |element| list.push(element.datum) }
-    list
+    each_with_object(SimpleLinkedList.new) do |element, list|
+      list.push(element.datum)
+    end
   end
 
   def self.from_a(array)
