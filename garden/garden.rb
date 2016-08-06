@@ -15,25 +15,21 @@ class Garden
   end
 
   def define_student_methods
-    assign_plants.each do |student, plants|
+    plant_assignments.each do |student, plants|
       define_singleton_method(student) do
         plants
       end
     end
   end
 
-  def assign_plants
+  def plant_assignments
     Hash[@students.zip(garden_setup)]
   end
 
   def garden_setup
     garden = []
-    front, back = @diagram.split
-    (front.size / 2).times do
-      garden << front.slice!(0..1)
-      garden << back.slice!(0..1)
-    end
-    garden.join.chars.map { |plant| PLANTS[plant] }
-          .each_slice(4).to_a
+    rows = @diagram.split
+    rows.each { |row| garden << row.slice!(0..1) } until rows[1].empty?
+    garden.join.chars.map { |plant| PLANTS[plant] }.each_slice(4).to_a
   end
 end
