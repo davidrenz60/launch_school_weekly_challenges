@@ -3,12 +3,12 @@ class Garden
                 eve fred ginny harriet
                 ileana joseph kincaid larry).freeze
 
-  PLANTS = { "R" => :radishes,
-             "C" => :clover,
-             "G" => :grass,
-             "V" => :violets }.freeze
+  PLANTS = { 'R' => :radishes,
+             'C' => :clover,
+             'G' => :grass,
+             'V' => :violets }.freeze
 
-  def initialize(diagram, students=STUDENTS)
+  def initialize(diagram, students = STUDENTS)
     @students = students.sort.map(&:downcase)
     @diagram = diagram
     define_student_methods
