@@ -14,6 +14,8 @@ class Garden
     define_student_methods
   end
 
+  private
+
   def define_student_methods
     plant_assignments.each do |student, plants|
       define_singleton_method(student) do
